@@ -23,7 +23,7 @@ export class PackagesConfigReader extends ReaderBase {
             });
         }
         catch(err){
-            throw "Cannot parse 'packages.config'. Is it in a valid format?";
+            throw new Error("Cannot parse 'packages.config'. Is it in a valid format?");
         }
     }
 }

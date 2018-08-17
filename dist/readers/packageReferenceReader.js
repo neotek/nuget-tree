@@ -11,6 +11,9 @@ class PackageReferenceReader extends readerBase_1.ReaderBase {
         if (!files.length)
             return [];
         const file = path.join(dir, files[0]);
+        return await this.process(file);
+    }
+    async process(file) {
         const xml = this.readSafe(fs.readFileSync(file));
         var parsedOutput = await this.parseXml(xml);
         if (!(parsedOutput && parsedOutput.Project && parsedOutput.Project && parsedOutput.Project.ItemGroup)) {
@@ -30,7 +33,7 @@ class PackageReferenceReader extends readerBase_1.ReaderBase {
             })).reduce((ret, cur) => ret.concat(cur), []);
         }
         catch (err) {
-            throw `Cannot parse ${file}. Is it in a valid format?`;
+            throw new Error(`Cannot parse ${file}. Is it in a valid format?`);
         }
     }
 }

@@ -2,7 +2,7 @@
   "name": "nuget-tree",
   "version": "1.0.12",
   "description": "",
-  "main": "lib.js",
+  "main": "dist/main.js",
   "scripts": {
     "test": "node dist/app.js --targetDirectory=C:/Projects/Picturepark/Picturepark.API/",
     "build": "tsc",
@@ -25,6 +25,7 @@
     "url": "https://github.com/richorama/nuget-tree.git"
   },
   "devDependencies": {
+    "@types/archy": "0.0.31",
     "@types/node": "^8.0.0",
     "@types/xml2js": "^0.4.3",
     "typescript": "^3.0.1"

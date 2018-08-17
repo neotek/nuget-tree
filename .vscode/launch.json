@@ -9,6 +9,9 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceFolder}/src/app.ts",
+            "args": [
+                "--solution", "C:/Projects/Picturepark/IdentityServer/Picturepark.IdentityServer.sln"
+            ],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"

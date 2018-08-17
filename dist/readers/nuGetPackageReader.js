@@ -5,14 +5,23 @@ const path = require("path");
 const readerBase_1 = require("./readerBase");
 var zip = require('zip');
 class NuGetPackageReader extends readerBase_1.ReaderBase {
+    constructor() {
+        super();
+        this.nuGet3Dir = path.join(require('os').homedir(), ".nuget/packages");
+    }
     async read(packagesFolder, nuGetPackage) {
         if (!packagesFolder)
             throw new Error("no packagesFolder");
-        var packageFilePath = path.join(packagesFolder, nuGetPackage.id + "." + nuGetPackage.version, nuGetPackage.id + "." + nuGetPackage.version + ".nupkg");
+        const packageFileName = nuGetPackage.id + "." + nuGetPackage.version + ".nupkg";
+        let packageFilePath = path.join(packagesFolder, nuGetPackage.id + "." + nuGetPackage.version, packageFileName);
         if (!fs.existsSync(packageFilePath)) {
-            console.log("WARN: Cannot find nupkg file for " + nuGetPackage.id);
-            console.log("Attempted to open this file: " + packageFilePath);
-            return [];
+            // Get from NuGet V3 path
+            packageFilePath = path.join(this.nuGet3Dir, nuGetPackage.id, nuGetPackage.version, packageFileName);
+            if (!fs.existsSync(packageFilePath)) {
+                console.log("WARN: Cannot find nupkg file for " + nuGetPackage.id);
+                console.log("Attempted to open this file: " + packageFilePath);
+                return [];
+            }
         }
         var nuspecXml = this.openNuspecFile(packageFilePath);
         if (!nuspecXml) {

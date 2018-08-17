@@ -15,6 +15,10 @@ export class PackageReferenceReader extends ReaderBase {
             return [];
 
         const file = path.join(dir, files[0]);
+        return await this.process(file);
+    }
+
+    async process(file: string): Promise<IPackage[]> {
         const xml = this.readSafe(fs.readFileSync(file));
 
         var parsedOutput = await this.parseXml(xml);
@@ -34,7 +38,7 @@ export class PackageReferenceReader extends ReaderBase {
                 }
             })).reduce((ret: any, cur: any) => ret.concat(cur), []);
         } catch (err) {
-            throw `Cannot parse ${file}. Is it in a valid format?`;
+            throw new Error(`Cannot parse ${file}. Is it in a valid format?`);
         }
     }
 }
