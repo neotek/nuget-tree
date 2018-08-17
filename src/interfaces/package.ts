@@ -4,6 +4,8 @@ export interface IPackage {
     targetFramework: string;
 
     // Extended
+    licenseUrl: string;
+    projectUrl: string;
     label: string;
     nodes: IPackage[];
     used: boolean;

@@ -38,12 +38,19 @@ export class NuGetPackageReader extends ReaderBase {
             return [];
         }
 
-        return await this.readAllDeps(nuspecXml);
+        const nuspec = await this.parseXml(nuspecXml);
+
+        if(nuspec.package.metadata && nuspec.package.metadata.length) {
+            var metadata = nuspec.package.metadata[0];
+            nuGetPackage.licenseUrl = metadata.licenseUrl && metadata.licenseUrl.length ? metadata.licenseUrl[0] : null;
+            nuGetPackage.projectUrl = metadata.projectUrl && metadata.projectUrl.length ? metadata.projectUrl[0] : null;
+        }
+
+        return this.readAllDeps(nuspec);
     }
 
-    async readAllDeps(nuspecXml: string): Promise<any> {
+    readAllDeps(data: any): any[] {
         var dependencies: any[] = [];
-        const data = await this.parseXml(nuspecXml);
 
         (data.package.metadata || []).forEach((metadata: any) => {
             (metadata.dependencies || []).forEach((dep: any) => {

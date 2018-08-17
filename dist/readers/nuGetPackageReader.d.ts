@@ -4,6 +4,6 @@ export declare class NuGetPackageReader extends ReaderBase {
     nuGet3Dir: string;
     constructor();
     read(packagesFolder: string, nuGetPackage: IPackage): Promise<IPackage[]>;
-    readAllDeps(nuspecXml: string): Promise<any>;
+    readAllDeps(data: any): any[];
     openNuspecFile(packageFilePath: string): any;
 }

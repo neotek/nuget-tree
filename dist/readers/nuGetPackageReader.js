@@ -29,11 +29,16 @@ class NuGetPackageReader extends readerBase_1.ReaderBase {
             console.log("Attempted to open this file: " + packageFilePath);
             return [];
         }
-        return await this.readAllDeps(nuspecXml);
+        const nuspec = await this.parseXml(nuspecXml);
+        if (nuspec.package.metadata && nuspec.package.metadata.length) {
+            var metadata = nuspec.package.metadata[0];
+            nuGetPackage.licenseUrl = metadata.licenseUrl && metadata.licenseUrl.length ? metadata.licenseUrl[0] : null;
+            nuGetPackage.projectUrl = metadata.projectUrl && metadata.projectUrl.length ? metadata.projectUrl[0] : null;
+        }
+        return this.readAllDeps(nuspec);
     }
-    async readAllDeps(nuspecXml) {
+    readAllDeps(data) {
         var dependencies = [];
-        const data = await this.parseXml(nuspecXml);
         (data.package.metadata || []).forEach((metadata) => {
             (metadata.dependencies || []).forEach((dep) => {
                 // if the nuget package targets multiple version, there are groups
